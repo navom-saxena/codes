@@ -1,0 +1,74 @@
+plugins {
+    id 'java'
+    id 'scala'
+    id 'application'
+}
+
+group 'codes'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+mainClassName = "akka.actors.Main"
+
+repositories {
+    mavenCentral()
+}
+
+configurations.all {
+    resolutionStrategy {
+        force "com.fasterxml.jackson.core:jackson-annotations:2.6.5"
+        force "com.fasterxml.jackson.core:jackson-core:2.6.5"
+        force "com.fasterxml.jackson.core:jackson-databind:2.6.5"
+        force "com.fasterxml.jackson.module:jackson-module-scala_2.11:2.6.5"
+    }
+}
+
+dependencies {
+    compile 'org.scala-lang:scala-compiler:2.11.8'
+    compile 'org.scala-lang:scala-library:2.11.8'
+    compile group: 'org.scalaz', name: 'scalaz-core_2.11', version: '7.3.0-M27'
+
+    compile 'org.apache.spark:spark-mllib_2.11:2.4.0'
+    compile 'org.apache.spark:spark-sql_2.11:2.4.0'
+    compile 'org.apache.spark:spark-streaming-flume-assembly_2.11:2.4.4'
+    compile 'org.apache.spark:spark-graphx_2.11:2.4.0'
+    compile 'org.apache.spark:spark-launcher_2.11:2.4.0'
+    compile 'org.apache.spark:spark-catalyst_2.11:2.4.0'
+    compile 'org.apache.spark:spark-streaming_2.11:2.4.0'
+    compile 'org.apache.spark:spark-core_2.11:2.4.0'
+
+    compile 'com.typesafe.play:play_2.11:2.6.21'
+    compile group: 'com.typesafe.akka', name: 'akka-actor_2.11', version: '2.5.25'
+    compile group:  'com.typesafe.akka', name: 'akka-remote_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-cluster_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-contrib_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-stream_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-agent_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-testkit_2.11', version: '2.5.25'
+    compile group: 'com.typesafe.akka', name: 'akka-slf4j_2.11', version: '2.5.25'
+    compile group: 'org.scalactic', name: 'scalactic_2.11', version: '3.0.5'
+
+    compile 'org.scalaj:scalaj-http_2.11:2.4.0'
+
+    compile group: 'org.mongodb.spark', name: 'mongo-spark-connector_2.11', version: '2.1.5'
+    compile group: 'org.mongodb.scala', name: 'mongo-scala-driver_2.11', version: '2.6.0'
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.1.0'
+
+    compile group: 'com.typesafe.scala-logging', name: 'scala-logging_2.11', version: '3.9.0'
+
+    compile "org.apache.hive:hive-serde:1.1.0"
+    compile group: 'org.apache.pig', name: 'pig', version: '0.15.0'
+
+    compile group: 'com.vividsolutions', name: 'jts', version: '1.13'
+
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.scalatest', name: 'scalatest_2.11', version: '3.0.5'
+
+    compile 'org.apache.tika:tika-parsers:1.14'
+    compile 'com.levigo.jbig2:levigo-jbig2-imageio:1.6.5'
+    compile 'com.github.jai-imageio:jai-imageio-core:1.3.1'
+    compile 'com.github.jai-imageio:jai-imageio-jpeg2000:1.3.0'
+
+//  for python packages, refer requirements.txt
+}
