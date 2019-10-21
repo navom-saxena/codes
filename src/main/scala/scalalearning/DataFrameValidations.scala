@@ -50,7 +50,7 @@ object DataFrameValidations extends App {
     .agg(count("*").alias("cnt")).filter("cnt > 1")
 
   val j2: DataFrame = f2.join(t2,
-    f2("customer_id") === t("customer_id")
+    f2("customer_id") === t2("customer_id")
       && f2("secure_traveler_sequence_number") === t2("SECURE_TRAVELER_SEQ_NUM")
       && f2("supplemental_travel_number_type") === t2("SUP_TRAVEL_NUMBER_TYPE")
     , "leftanti"
