@@ -1,4 +1,4 @@
-package dsAlgo.hackerRank.dataStructures;
+package dsAlgo.hackerRank.datastructures;
 
 import java.util.ArrayList;
 import java.util.HashMap;
