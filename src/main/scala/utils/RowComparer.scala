@@ -1,13 +1,15 @@
 package utils
 
-import org.apache.spark.sql.Row
-
 import java.sql.Timestamp
+
+import org.apache.spark.sql.Row
+import org.apache.spark.sql.types.DecimalType
+
 import scala.math.abs
 
 object RowComparer {
 
-  /** Approximate equality, based on equals from [[Row]] */
+  /** Approximate equality, based on equals from [[Row]]*/
   def areRowsEqual(r1: Row, r2: Row, tol: Double): Boolean = {
     if (r1.length != r2.length) {
       return false
@@ -44,6 +46,11 @@ object RowComparer {
                 return false
               }
               if (abs(d1 - o2.asInstanceOf[Double]) > tol) {
+                return false
+              }
+
+            case d1: DecimalType =>
+              if (d1.simpleString.compareTo(o2.asInstanceOf[DecimalType].simpleString) != 0) {
                 return false
               }
 
