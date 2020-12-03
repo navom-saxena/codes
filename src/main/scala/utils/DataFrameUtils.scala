@@ -1,7 +1,6 @@
 package utils
 
 import java.io.IOException
-
 import org.apache.hadoop.fs.{FileSystem, Path}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.functions.{lit, split}

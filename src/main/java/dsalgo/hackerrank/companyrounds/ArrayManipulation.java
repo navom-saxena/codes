@@ -5,14 +5,15 @@ import java.util.*;
 public class ArrayManipulation {
 
     public static void main(String[] args) {
-        List<Integer> arr = new ArrayList<>();
-        arr.add(1);
-        arr.add(2);
-        arr.add(1);
-        arr.add(1);
-        arr.add(2);
-        arr.add(3);
-        System.out.println(getDistanceMetrics(arr));
+//        List<Integer> arr = new ArrayList<>();
+//        arr.add(1);
+//        arr.add(2);
+//        arr.add(1);
+//        arr.add(1);
+//        arr.add(2);
+//        arr.add(3);
+//        System.out.println(getDistanceMetrics(arr));
+        System.out.println(shortenString("AAAA"));
     }
 
     public static List<Long> getDistanceMetricsBrute(List<Integer> arr) {
@@ -53,5 +54,27 @@ public class ArrayManipulation {
             }
         });
         return new ArrayList<>(fm.values());
+    }
+
+//    ABABCABABCD to AB*C*D
+    public static int shortenString(String input) {
+        int updatedLength = input.length();
+        int startingCounter = 0;
+        int preIndex = -1;
+        for (int i = 0; i < input.length(); i++) {
+            if (i > 0 && input.charAt(i) == input.charAt(startingCounter)) {
+                if (preIndex == -1) {
+                    preIndex = i;
+                }
+                startingCounter++;
+            } else {
+                if (startingCounter == preIndex) {
+                    updatedLength -= startingCounter + 1;
+                }
+                startingCounter = 0;
+                preIndex = -1;
+            }
+        }
+        return updatedLength;
     }
 }

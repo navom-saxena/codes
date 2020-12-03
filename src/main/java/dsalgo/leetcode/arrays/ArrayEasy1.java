@@ -6,12 +6,8 @@ import java.util.stream.Collectors;
 public class ArrayEasy1 {
 
     public static void main(String[] args) {
-//        System.out.println(containerWithMostWater(new int[]{1,8,6,2,5,4,8,3,7}));
 //        kidsWithCandies(new int[]{12, 1, 12}, 10).forEach(System.out::println);
-//        System.out.println(trappingRainWater(new int[]{0,1,0,2,1,0,1,3,2,1,2,1}));
 //        Arrays.stream(twoSum(new int[]{2, 7, 11, 15}, 9)).forEach(System.out::println);
-//        System.out.println(threeSumClosest(new int[]{-1,2,1,-4}, -1));
-//        System.out.println(fourSum(new int[]{0,0,0,0}, 0));
 //        System.out.println(removeDuplicates(new int[]{1, 1, 1, 1}));
 //        System.out.println(removeDuplicatesTwo(new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8}));
 //        System.out.println(removeElement(new int[]{3,2,2,3},3));
@@ -39,24 +35,6 @@ public class ArrayEasy1 {
 //        System.out.println(findPairs(new int[]{1, 1, 1, 1, 1}, 0));
     }
 
-//    https://leetcode.com/problems/container-with-most-water/
-
-    public static int containerWithMostWater(int[] height) {
-        int i = 0;
-        int j = height.length - 1;
-        int max = Integer.MIN_VALUE;
-        while (i < j) {
-            int minHeight = Math.min(height[i], height[j]);
-            max = Math.max(max, minHeight * (j - i));
-            if (height[i] < height[j]) {
-                i++;
-            } else {
-                j--;
-            }
-        }
-        return max;
-    }
-
 //    https://leetcode.com/problems/kids-with-the-greatest-number-of-candies/
 
     public static List<Boolean> kidsWithCandies(int[] candies, int extraCandies) {
@@ -71,44 +49,6 @@ public class ArrayEasy1 {
             flagArr.add(i, candies[i] + extraCandies >= max);
         }
         return flagArr;
-    }
-
-//    https://leetcode.com/problems/3sum/
-
-    public static List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        Arrays.sort(nums);
-        for (int a = 0; a < nums.length - 2; a++) {
-            if (a > 0 && nums[a] == nums[a - 1]) {
-                continue;
-            }
-            int x = nums[a];
-            int i = a + 1;
-            int j = nums.length - 1;
-            while (i < j) {
-                int sum = x + nums[i] + nums[j];
-                if (sum == 0) {
-                    List<Integer> arr = new ArrayList<>();
-                    arr.add(x);
-                    arr.add(nums[i]);
-                    arr.add(nums[j]);
-                    result.add(arr);
-                    while (nums[i] == nums[i + 1]) {
-                        i++;
-                    }
-                    while (nums[j] == nums[j - 1]) {
-                        j--;
-                    }
-                    i++;
-                    j--;
-                } else if (sum < 0) {
-                    i++;
-                } else {
-                    j--;
-                }
-            }
-        }
-        return result;
     }
 
 //    https://leetcode.com/problems/trapping-rain-water/
@@ -152,76 +92,6 @@ public class ArrayEasy1 {
             }
         }
         return outputArr;
-    }
-
-//    https://leetcode.com/problems/3sum-closest/
-
-    public static int threeSumClosest(int[] nums, int target) {
-        Arrays.sort(nums);
-        long minSum = Integer.MAX_VALUE;
-        for (int a = 0; a < nums.length - 2; a++) {
-            int x = nums[a];
-            int i = a + 1;
-            int j = nums.length - 1;
-            while (i < j) {
-                int sum = x + nums[i] + nums[j];
-                if (Math.abs(target - sum) <= Math.abs(target - minSum)) {
-                    minSum = sum;
-                }
-                if (sum < target) {
-                    i++;
-                } else {
-                    j--;
-                }
-            }
-        }
-        return (int) minSum;
-    }
-
-//    https://leetcode.com/problems/4sum/
-
-    public static List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> result = new ArrayList<>();
-        if (nums == null || nums.length < 4) {
-            return result;
-        }
-        Arrays.sort(nums);
-        for (int i = 0; i < nums.length - 3; i++) {
-            if (i > 0 && nums[i] == nums[i - 1]) {
-                continue;
-            }
-            for (int j = i + 1; j < nums.length - 2; j++) {
-                if (j != i + 1 && nums[j] == nums[j - 1]) {
-                    continue;
-                }
-                int low = j + 1;
-                int high = nums.length - 1;
-                while (low < high) {
-                    int sum = nums[i] + nums[j] + nums[low] + nums[high];
-                    if (sum == target) {
-                        List<Integer> arr = new ArrayList<>();
-                        arr.add(nums[i]);
-                        arr.add(nums[j]);
-                        arr.add(nums[low]);
-                        arr.add(nums[high]);
-                        result.add(arr);
-                        low++;
-                        high--;
-                        while (low < high && nums[low] == nums[low - 1]) {
-                            low++;
-                        }
-                        while (low < high && nums[high] == nums[high + 1]) {
-                            high--;
-                        }
-                    } else if (sum < target) {
-                        low++;
-                    } else {
-                        high--;
-                    }
-                }
-            }
-        }
-        return result;
     }
 
 //    https://leetcode.com/problems/remove-duplicates-from-sorted-array/
