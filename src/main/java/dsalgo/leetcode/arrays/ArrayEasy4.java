@@ -25,7 +25,8 @@ public class ArrayEasy4 {
 //        System.out.println(findKthPositive(new int[]{2,3,4,7,11},5));
 //        System.out.println(diagonalSum(new int[][]{{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}}));
 //        System.out.println(mostVisited(3,new int[] {3,2,1,2,1,3,2,1,2,1,3,2,3,1}));
-        System.out.println(containsPattern(new int[]{2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2}, 1, 4));
+//        System.out.println(containsPattern(new int[]{2, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 2, 2}, 1, 4));
+        System.out.println(sumOddLengthSubarrays(new int[]{1,4,2,5,3}));
     }
 
 //    https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/
@@ -531,6 +532,30 @@ public class ArrayEasy4 {
             }
         }
         return false;
+    }
+
+//    https://leetcode.com/problems/sum-of-all-odd-length-subarrays/
+
+    public static int sumOddLengthSubarrays(int[] arr) {
+        int sum = 0;
+        int k = 1;
+        while (k <= arr.length) {
+            int start = 0;
+            int end = start + k;
+            int runningSum = 0;
+            for (int i = start; i < end; i++) {
+                runningSum += arr[i];
+            }
+            sum += runningSum;
+            while (end < arr.length) {
+                runningSum = runningSum + arr[end] - arr[start];
+                sum += runningSum;
+                end++;
+                start++;
+            }
+            k = k + 2;
+        }
+        return sum;
     }
 
 }

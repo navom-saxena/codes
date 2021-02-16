@@ -89,7 +89,7 @@ object OopStructures extends App {
   }
 
   val point1: Point = new Point(2, 3)
-  point1.x
+  println(point1.x)
 
 
   trait Iterator[A] {
