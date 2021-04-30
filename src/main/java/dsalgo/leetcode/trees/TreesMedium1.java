@@ -1,7 +1,7 @@
 package dsalgo.leetcode.trees;
 
 import java.util.*;
-
+import dsalgo.leetcode.Models.*;
 public class TreesMedium1 {
 
     public static void main(String[] args) {
@@ -77,25 +77,6 @@ public class TreesMedium1 {
         Node(int freq, char data) {
             this.freq = freq;
             this.data = data;
-        }
-    }
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode() {
-        }
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
         }
     }
 

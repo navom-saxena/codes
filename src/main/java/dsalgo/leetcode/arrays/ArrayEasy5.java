@@ -1,5 +1,6 @@
 package dsalgo.leetcode.arrays;
 
+import java.text.DecimalFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -26,6 +27,14 @@ public class ArrayEasy5 {
 //        System.out.println(stringShift("wpdhhcj" ,new int[][]{{0,7},{1,7},{1,0},{1,3},{0,3},{0,6},{1,2}}));
 //        System.out.println(transformArray(new int[]{1,6,3,4,3,5}));
 //        System.out.println(findMissingRanges(new int[]{0,1,3,50,75},-2, 99));
+//        System.out.println(check(new int[]{6,10,6}));
+//        System.out.println(Arrays.toString(frequencySort(new int[]{-1,1,-6,4,5,-6,1,4,1})));
+//        System.out.println(trimMean(new int[]{1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3}));
+//        System.out.println(Arrays.toString(decrypt(new int[] {1,2,3,4},-2)));
+//        System.out.println(getMaximumGenerated(3));
+//        System.out.println(minOperations("1111"));
+//        System.out.println(specialArray(new int[]{2,3,0,2}));
+        System.out.println(canFormArray(new int[]{91,4,64,78}, new int[][]{{78},{4,64},{91}}));
     }
 
 //    https://leetcode.com/problems/richest-customer-wealth/
@@ -449,6 +458,347 @@ public class ArrayEasy5 {
             }
         }
         return result;
+    }
+
+//    https://leetcode.com/problems/find-the-highest-altitude/
+
+    public int largestAltitude(int[] gain) {
+        int prevAltitude = 0;
+        int maxAltitude = 0;
+        for (int g : gain) {
+            int currAltitude = prevAltitude + g;
+            maxAltitude = Math.max(maxAltitude, currAltitude);
+            prevAltitude = currAltitude;
+        }
+        return maxAltitude;
+    }
+
+//    https://leetcode.com/problems/sum-of-unique-elements/
+
+    public static int sumOfUnique(int[] nums) {
+        Map<Integer,Integer> hm = new HashMap<>();
+        for (int num : nums) {
+            hm.merge(num, 1, Integer::sum);
+        }
+        int sum = 0;
+        for (int key : hm.keySet()) {
+            if (hm.get(key) == 1) {
+                sum += key;
+            }
+        }
+        return sum;
+    }
+
+//    https://leetcode.com/problems/maximum-number-of-balls-in-a-box/
+
+    public static int digitSum(int n) {
+        int sum = 0;
+        while (n > 0) {
+            sum += n % 10;
+            n /= 10;
+        }
+        return sum;
+    }
+
+    public static int countBalls(int lowLimit, int highLimit) {
+        Map<Integer,Integer> hm = new HashMap<>();
+        for (int i = lowLimit; i <= highLimit; i++) {
+            int sum = digitSum(i);
+            hm.merge(sum, 1, Integer::sum);
+        }
+        int maxValue = Integer.MIN_VALUE;
+        for (int frequency : hm.values()) {
+            maxValue = Math.max(maxValue, frequency);
+        }
+        return maxValue;
+    }
+
+//    https://leetcode.com/problems/number-of-students-unable-to-eat-lunch/
+
+    public static int countStudents(int[] students, int[] sandwiches) {
+        int zeroCount = 0;
+        int onesCount = 0;
+        for(int student : students) {
+            if (student == 0) {
+                zeroCount++;
+            } else {
+                onesCount++;
+            }
+        }
+        for (int sandwich : sandwiches) {
+            if (sandwich == 0 && zeroCount > 0) {
+                zeroCount--;
+            } else if (sandwich == 1 && onesCount > 0) {
+                onesCount--;
+            } else {
+                break;
+            }
+        }
+        return zeroCount + onesCount;
+    }
+
+//    https://leetcode.com/problems/check-if-array-is-sorted-and-rotated/
+
+    public static boolean check(int[] nums) {
+        if (nums[0] < nums[nums.length - 1]) {
+            for (int i = 0; i < nums.length - 1; i++) {
+                if (nums[i] > nums[i + 1]) {
+                    return false;
+                }
+            }
+        } else {
+            boolean flag = false;
+            for (int i = 0; i < nums.length - 1; i++) {
+                if (nums[i] > nums[i + 1] && !flag) {
+                    flag = true;
+                } else if (nums[i] > nums[i + 1] && flag) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+//    https://leetcode.com/problems/sort-array-by-increasing-frequency/
+
+    static class PairValues {
+        int no;
+        int freq;
+
+        PairValues(int no, int freq) {
+            this.no = no;
+            this.freq = freq;
+        }
+
+        public int getFreq() {
+            return freq;
+        }
+
+        public int getNo() {
+            return no;
+        }
+    }
+
+    public static int[] frequencySort(int[] nums) {
+        PriorityQueue<PairValues> minHeap = new PriorityQueue<>(
+                Comparator.comparingInt(PairValues::getFreq)
+                        .thenComparing(Comparator.comparingInt(PairValues::getNo).reversed()));
+
+        Map<Integer,Integer> freqMap = new HashMap<>();
+        for (int num : nums) {
+            freqMap.merge(num,1, Integer::sum);
+        }
+        freqMap.forEach((k,v) -> minHeap.add(new PairValues(k,v)));
+        int i = 0;
+        while (!minHeap.isEmpty()) {
+            PairValues pairValues = minHeap.remove();
+            int no = pairValues.no;
+            int freq = pairValues.freq;
+            while (freq != 0) {
+                nums[i] = no;
+                freq--;
+                i++;
+            }
+        }
+        return nums;
+    }
+
+//    https://leetcode.com/problems/mean-of-array-after-removing-some-elements/
+
+    public static double trimMean(int[] arr) {
+       Arrays.sort(arr);
+       int fivePercent = arr.length / 20;
+       double sum = 0.0;
+       for (int i = fivePercent; i < arr.length - fivePercent; i++) {
+           sum += arr[i];
+       }
+       return sum / (arr.length - (fivePercent * 2));
+    }
+
+//    https://leetcode.com/problems/special-positions-in-a-binary-matrix/submissions/
+
+    public static int numSpecial(int[][] picture) {
+        Map<Integer,List<Integer>> rowMap = new HashMap<>();
+        Map<Integer,List<Integer>> columnMap = new HashMap<>();
+        for (int i = 0; i < picture.length; i++) {
+            for (int j = 0; j < picture[0].length; j++) {
+                if (picture[i][j] == 1) {
+                    List<Integer> columnsList = rowMap.getOrDefault(i, new ArrayList<>());
+                    columnsList.add(j);
+                    rowMap.put(i, columnsList);
+                    List<Integer> rowList = columnMap.getOrDefault(j, new ArrayList<>());
+                    rowList.add(i);
+                    columnMap.put(j, rowList);
+                }
+            }
+        }
+        int count = 0;
+        for (List<Integer> columnsList : rowMap.values()) {
+            if (columnsList.size() == 1 && columnMap.get(columnsList.get(0)).size() == 1) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+//    https://leetcode.com/problems/defuse-the-bomb/
+
+    public static int[] decrypt(int[] code, int k) {
+        int n = code.length;
+        int [] result = new int[code.length];
+        int shift;
+        if (k > 0) {
+            shift = 1;
+        } else if (k < 0) {
+            shift = -1;
+        } else {
+            return result;
+        }
+        k = Math.abs(k);
+        int runningSum = 0;
+        int i = shift;
+        while (Math.abs(i) <= k) {
+            runningSum += code[((i % n) + n) % n];
+            i = i + shift;
+        }
+        if (shift < 0) {
+            i = 0;
+        }
+        for (int j = 0; j < n; j++) {
+            result[j] = runningSum;
+            int iIndex = ((i % n) + n) % n;
+            runningSum += code[iIndex] - code[(iIndex - k + n) % n];
+            i = i + 1;
+        }
+        return result;
+    }
+
+//    https://leetcode.com/problems/check-if-all-1s-are-at-least-length-k-places-away/
+
+    public static boolean kLengthApart(int[] nums, int k) {
+        int distance = k;
+        for (int num : nums) {
+            if (num == 1) {
+                if (distance < k) {
+                    return false;
+                }
+                distance = 0;
+            } else {
+                distance++;
+            }
+        }
+        return true;
+    }
+
+//    https://leetcode.com/problems/slowest-key/
+
+    public static char slowestKey(int[] releaseTimes, String keysPressed) {
+        int initial = 0;
+        int maxPress = Integer.MIN_VALUE;
+        char maxPressedAlphabet = '1';
+        for (int i = 0; i < releaseTimes.length; i++) {
+            int press = releaseTimes[i] - initial;
+            if (press > maxPress) {
+                maxPress = press;
+                maxPressedAlphabet = keysPressed.charAt(i);
+            } else if (press == maxPress && keysPressed.charAt(i) > maxPressedAlphabet) {
+                maxPressedAlphabet = keysPressed.charAt(i);
+            }
+            initial = releaseTimes[i];
+        }
+        return maxPressedAlphabet;
+    }
+
+//    https://leetcode.com/problems/get-maximum-in-generated-array/
+
+    public static int getMaximumGenerated(int n) {
+        if (n == 0 || n == 1) {
+            return 0;
+        }
+        int [] arr = new int[n + 1];
+        int maxValue = 1;
+        arr[1] = 1;
+        for (int i = 1; i <= n/2; i++) {
+            if (i * 2 <= n) arr[i * 2] = arr[i];
+            if ((i * 2) + 1 <= n) {
+                arr[(i * 2) + 1] = arr[i] + arr[i + 1];
+                maxValue = Math.max(maxValue, arr[(i * 2) + 1]);
+            }
+        }
+        return maxValue;
+    }
+
+//    https://leetcode.com/problems/minimum-changes-to-make-alternating-binary-string/
+
+    public static int minOperations(String s) {
+        int firstAltCount = 0;
+        int secondAltCount = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (i % 2 == 0) {
+                if (s.charAt(i) == '1') {
+                    firstAltCount++;
+                } else {
+                    secondAltCount++;
+                }
+            } else {
+                if (s.charAt(i) == '0') {
+                    firstAltCount++;
+                } else {
+                    secondAltCount++;
+                }
+            }
+        }
+        return Math.min(firstAltCount, secondAltCount);
+    }
+
+//    https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/
+
+    public static int specialArray(int[] nums) {
+        Arrays.sort(nums);
+        int n = nums.length;
+        if (nums[0] > n) {
+            return n;
+        }
+        int lastElement = -1;
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
+                continue;
+            }
+            if (nums[i] == n - i) {
+                return n - i;
+            }
+            if (n - i < nums[i] && lastElement < n - i) {
+                return n - i;
+            }
+            lastElement = nums[i];
+        }
+        return -1;
+    }
+
+//    https://leetcode.com/problems/check-array-formation-through-concatenation/
+
+    public static boolean canFormArray(int[] arr, int[][] pieces) {
+        Map<Integer,Integer> link = new HashMap<>();
+        for (int i = 0; i < pieces.length;i++) {
+            link.put(pieces[i][0],i);
+        }
+        int i = 0;
+        while (i < arr.length) {
+            if (link.containsKey(arr[i])) {
+                int [] piece = pieces[link.get(arr[i])];
+                int l = 0;
+                while (l < piece.length) {
+                    if (arr[i] != piece[l]) {
+                        return false;
+                    }
+                    l++;
+                    i++;
+                }
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
 //    https://leetcode.com/problems/dot-product-of-two-sparse-vectors/

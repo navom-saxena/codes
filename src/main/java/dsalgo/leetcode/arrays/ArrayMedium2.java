@@ -1,7 +1,7 @@
 package dsalgo.leetcode.arrays;
 
 import javafx.util.Pair;
-
+import dsalgo.leetcode.Models.*;
 import java.util.*;
 
 public class ArrayMedium2 {
@@ -1027,22 +1027,6 @@ public class ArrayMedium2 {
             } else {
                 return insertBooking(root, start, end);
             }
-        }
-    }
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-
-        TreeNode(int val) {
-            this.val = val;
-        }
-
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
         }
     }
 

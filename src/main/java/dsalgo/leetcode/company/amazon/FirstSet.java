@@ -1,7 +1,7 @@
 package dsalgo.leetcode.company.amazon;
 
 import java.util.*;
-
+import dsalgo.leetcode.Models.*;
 public class FirstSet {
 
     public static void main(String[] args) {
@@ -370,14 +370,6 @@ public class FirstSet {
 
 //    https://leetcode.com/problems/merge-k-sorted-lists/
 
-    public static class ListNode {
-        int val;
-        ListNode next;
-        ListNode() {}
-        ListNode(int val) { this.val = val; }
-        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
-    }
-
     public static ListNode mergeKLists(ListNode[] lists) {
 //        ListNode head = null;
 //        ListNode curr = head;
@@ -442,19 +434,6 @@ public class FirstSet {
     }
 
 //    https://leetcode.com/problems/subtree-of-another-tree/
-
-    public static class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
 
     public static boolean check(TreeNode s, TreeNode t) {
         if (s == null || t == null) {

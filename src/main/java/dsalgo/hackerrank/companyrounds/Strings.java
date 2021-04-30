@@ -1,6 +1,6 @@
 package dsalgo.hackerrank.companyrounds;
 
-public class StringManipulation {
+public class Strings {
 
     public static void main(String[] args) {
 
