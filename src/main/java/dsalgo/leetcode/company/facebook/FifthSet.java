@@ -23,7 +23,8 @@ public class FifthSet {
 //        System.out.println(findItinerary(Arrays.asList(Arrays.asList("AXA", "EZE"), Arrays.asList("EZE", "AUA"), Arrays.asList("ADL", "JFK"), Arrays.asList("ADL", "TIA"), Arrays.asList("AUA", "AXA"), Arrays.asList("EZE", "TIA"), Arrays.asList("EZE", "TIA"), Arrays.asList("AXA", "EZE"), Arrays.asList("EZE", "ADL"), Arrays.asList("ANU", "EZE"), Arrays.asList("TIA", "EZE"), Arrays.asList("JFK", "ADL"), Arrays.asList("AUA", "JFK"), Arrays.asList("JFK", "EZE"), Arrays.asList("EZE", "ANU"), Arrays.asList("ADL", "AUA"), Arrays.asList("ANU", "AXA"), Arrays.asList("AXA", "ADL"), Arrays.asList("AUA", "JFK"), Arrays.asList("EZE", "ADL"), Arrays.asList("ANU", "TIA"), Arrays.asList("AUA", "JFK"), Arrays.asList("TIA", "JFK"), Arrays.asList("EZE", "AUA"), Arrays.asList("AXA", "EZE"), Arrays.asList("AUA", "ANU"), Arrays.asList("ADL", "AXA"), Arrays.asList("EZE", "ADL"), Arrays.asList("AUA", "ANU"), Arrays.asList("AXA", "EZE"), Arrays.asList("TIA", "AUA"), Arrays.asList("AXA", "EZE"), Arrays.asList("AUA", "SYD"), Arrays.asList("ADL", "JFK"), Arrays.asList("EZE", "AUA"), Arrays.asList("ADL", "ANU"), Arrays.asList("AUA", "TIA"), Arrays.asList("ADL", "EZE"), Arrays.asList("TIA", "JFK"), Arrays.asList("AXA", "ANU"), Arrays.asList("JFK", "AXA"), Arrays.asList("JFK", "ADL"), Arrays.asList("ADL", "EZE"), Arrays.asList("AXA", "TIA"), Arrays.asList("JFK", "AUA"), Arrays.asList("ADL", "EZE"), Arrays.asList("JFK", "ADL"), Arrays.asList("ADL", "AXA"), Arrays.asList("TIA", "AUA"), Arrays.asList("AXA", "JFK"), Arrays.asList("ADL", "AUA"), Arrays.asList("TIA", "JFK"), Arrays.asList("JFK", "ADL"), Arrays.asList("JFK", "ADL"), Arrays.asList("ANU", "AXA"), Arrays.asList("TIA", "AXA"), Arrays.asList("EZE", "JFK"), Arrays.asList("EZE", "AXA"), Arrays.asList("ADL", "TIA"), Arrays.asList("JFK", "AUA"), Arrays.asList("TIA", "EZE"), Arrays.asList("EZE", "ADL"), Arrays.asList("JFK", "ANU"), Arrays.asList("TIA", "AUA"), Arrays.asList("EZE", "ADL"), Arrays.asList("ADL", "JFK"), Arrays.asList("ANU", "AXA"), Arrays.asList("AUA", "AXA"), Arrays.asList("ANU", "EZE"), Arrays.asList("ADL", "AXA"), Arrays.asList("ANU", "AXA"), Arrays.asList("TIA", "ADL"), Arrays.asList("JFK", "ADL"), Arrays.asList("JFK", "TIA"), Arrays.asList("AUA", "ADL"), Arrays.asList("AUA", "TIA"), Arrays.asList("TIA", "JFK"), Arrays.asList("EZE", "JFK"), Arrays.asList("AUA", "ADL"), Arrays.asList("ADL", "AUA"), Arrays.asList("EZE", "ANU"), Arrays.asList("ADL", "ANU"), Arrays.asList("AUA", "AXA"), Arrays.asList("AXA", "TIA"), Arrays.asList("AXA", "TIA"), Arrays.asList("ADL", "AXA"), Arrays.asList("EZE", "AXA"), Arrays.asList("AXA", "JFK"), Arrays.asList("JFK", "AUA"), Arrays.asList("ANU", "ADL"), Arrays.asList("AXA", "TIA"), Arrays.asList("ANU", "AUA"), Arrays.asList("JFK", "EZE"), Arrays.asList("AXA", "ADL"), Arrays.asList("TIA", "EZE"), Arrays.asList("JFK", "AXA"), Arrays.asList("AXA", "ADL"), Arrays.asList("EZE", "AUA"), Arrays.asList("AXA", "ANU"), Arrays.asList("ADL", "EZE"), Arrays.asList("AUA", "EZE"))));
 //        System.out.println(isMatch("zacabz","*a?b*"));
 //        System.out.println(Arrays.toString(medianSlidingWindow(new int[]{-2147483648, -2147483648, 2147483647, -2147483648, -2147483648, -2147483648, 2147483647, 2147483647, 2147483647, 2147483647, -2147483648, 2147483647, -2147483648}, 3)));
-        System.out.println(generateParenthesis(3));
+//        System.out.println(generateParenthesis(3));
+        System.out.println(knightDialer(2));
     }
 
 //    https://leetcode.com/problems/target-sum/
@@ -1031,6 +1032,163 @@ public class FifthSet {
         else prev.next = reversedHead;
         temp.next = nextToReversed;
         return head;
+    }
+
+//    https://leetcode.com/problems/knight-dialer/
+
+    public static int knightDialer(int n) {
+        Map<Integer,List<Integer>> adj = new HashMap<>();
+        adj.put(0, Arrays.asList(4,6));
+        adj.put(1, Arrays.asList(6,8));
+        adj.put(2, Arrays.asList(7,9));
+        adj.put(3, Arrays.asList(4,8));
+        adj.put(4, Arrays.asList(3,9,0));
+        adj.put(5, new ArrayList<>());
+        adj.put(6, Arrays.asList(7,0,1));
+        adj.put(7, Arrays.asList(2,6));
+        adj.put(8, Arrays.asList(1,3));
+        adj.put(9, Arrays.asList(2,4));
+
+        int [][] dp = new int[10][2];
+        for (int i = 0; i < dp.length; i++) {
+            dp[i][0] = 1;
+        }
+        int numDigits = 2;
+        while (numDigits <= n) {
+            for (int i = 0; i < dp.length; i++) {
+                dp[i][1] = 0;
+                for (int fromNode : adj.getOrDefault(i, new ArrayList<>())) {
+                    dp[i][1] = (dp[i][1] + (dp[fromNode][0] % 1000000007)) % 1000000007;
+                }
+            }
+            for (int i = 0; i < dp.length; i++) {
+                dp[i][0] = dp[i][1];
+            }
+            numDigits++;
+        }
+        int sum = 0;
+        for (int[] ints : dp) sum = (sum + (ints[0] % 1000000007)) % 1000000007;
+        return sum;
+    }
+
+//    https://leetcode.com/problems/number-of-distinct-islands/
+
+    void dfsDistinctIslands(int [][] grid, int i, int j, int absI, int absJ,
+                            Set<String> visited, boolean [][] seen) {
+        if (i < 0 || i >= grid.length || j < 0 || j >= grid[i].length ||
+                grid[i][j] == 0 || seen[i][j]) return;
+        int iVal = i - absI;
+        int jVal = j - absJ;
+        String node = iVal + " " + jVal;
+        if (visited.contains(node)) return;
+        visited.add(node);
+        seen[i][j] = true;
+        dfsDistinctIslands(grid, i + 1, j, absI, absJ, visited, seen);
+        dfsDistinctIslands(grid, i - 1, j, absI, absJ, visited, seen);
+        dfsDistinctIslands(grid, i, j + 1, absI, absJ, visited, seen);
+        dfsDistinctIslands(grid, i, j - 1, absI, absJ, visited, seen);
+    }
+
+    public int numDistinctIslands(int[][] grid) {
+        Set<Set<String>> distinctIslands = new HashSet<>();
+        boolean [][] seen = new boolean[grid.length][grid[0].length];
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    Set<String> visited = new HashSet<>();
+                    dfsDistinctIslands(grid, i, j, i, j, visited, seen);
+                    if (!visited.isEmpty()) distinctIslands.add(visited);
+                }
+            }
+        }
+        return distinctIslands.size();
+    }
+
+//    https://leetcode.com/problems/spiral-matrix-iii/
+
+    boolean withinBounds(int i, int j, int r, int c) {
+        return i >= 0 && i < r && j >= 0 && j < c;
+    }
+
+    public int[][] spiralMatrixIII(int rows, int cols, int rStart, int cStart) {
+        int n = rows * cols;
+        int [][] res = new int[n][2];
+        int no = 0;
+        int leftC = cStart;
+        int rightC = cStart + 1;
+        int upR = rStart;
+        int downR = rStart + 1;
+        while (no <= n) {
+            boolean processed = false;
+            for (int j = leftC; j < rightC; j++) {
+                if (!withinBounds(upR, j, rows, cols)) continue;
+                res[no] = new int[]{upR,j};
+                no++;
+                processed = true;
+            }
+            leftC--;
+            for (int i = upR; i < downR; i++) {
+                if (!withinBounds(i, rightC, rows, cols)) continue;
+                res[no] = new int[]{i,rightC};
+                no++;
+                processed = true;
+            }
+            upR--;
+            for (int j = rightC; j > leftC; j--) {
+                if (!withinBounds(downR, j, rows, cols)) continue;
+                res[no] = new int[]{downR,j};
+                no++;
+                processed = true;
+            }
+            rightC++;
+            for (int i = downR; i > upR; i--) {
+                if (!withinBounds(i, leftC, rows, cols)) continue;
+                res[no] = new int[]{i,leftC};
+                no++;
+                processed = true;
+            }
+            downR++;
+            if (!processed) break;
+        }
+        return res;
+    }
+
+//    https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string-ii/
+
+    public String removeDuplicates(String s, int k) {
+        Deque<Pair<Character,Integer>> stack = new ArrayDeque<>();
+        for (char c : s.toCharArray()) {
+            if (stack.isEmpty() || stack.peek().getKey() != c) stack.push(new Pair<>(c,1));
+            else {
+                Pair<Character,Integer> t = stack.pop();
+                stack.push(new Pair<>(t.getKey(),t.getValue() + 1));
+            }
+            if (!stack.isEmpty() && stack.peek().getValue() == k) stack.pop();
+        }
+        StringBuilder sb = new StringBuilder();
+        while (!stack.isEmpty()) {
+            Pair<Character,Integer> t = stack.pop();
+            for (int i = 1; i <= t.getValue(); i++) {
+                sb.append(t.getKey());
+            }
+        }
+        return sb.reverse().toString();
+    }
+
+//    https://leetcode.com/problems/find-largest-value-in-each-tree-row/
+
+    void largestValuesUtil(TreeNode node, int i, List<Integer> res) {
+        if (node == null) return;
+        if (res.size() == i) res.add(node.val);
+        else res.set(i, Math.max(res.get(i),node.val));
+        largestValuesUtil(node.left, i + 1, res);
+        largestValuesUtil(node.right, i + 1, res);
+    }
+
+    public List<Integer> largestValues(TreeNode root) {
+        List<Integer> res = new ArrayList<>();
+        largestValuesUtil(root, 0, res);
+        return res;
     }
 
 }
