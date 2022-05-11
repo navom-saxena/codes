@@ -200,4 +200,69 @@ public class Heap {
         return kPoints;
     }
 
+//    https://leetcode.com/explore/learn/card/heap/646/practices/4090/
+
+    public int connectSticks(int[] sticks) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int stick : sticks) {
+            minHeap.add(stick);
+        }
+        int cost = 0;
+        while (minHeap.size() > 1) {
+            int a = minHeap.remove();
+            int b = minHeap.remove();
+            int sum = a + b;
+            cost += sum;
+            minHeap.add(sum);
+        }
+        return cost;
+    }
+
+//    https://leetcode.com/problems/furthest-building-you-can-reach/
+
+    public int furthestBuilding(int[] heights, int bricks, int ladders) {
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        for (int i = 0; i < heights.length - 1; i++) {
+            int d = heights[i + 1] - heights[i];
+            if (d <= 0) continue;
+            minHeap.add(d);
+            if (minHeap.size() > ladders) {
+                bricks -= minHeap.remove();
+            }
+            if (bricks < 0) return i;
+        }
+        return heights.length - 1;
+    }
+
+//    https://leetcode.com/explore/learn/card/heap/646/practices/4092/
+
+    static class MedianFinder {
+
+        PriorityQueue<Integer> minHeap;
+        PriorityQueue<Integer> maxHeap;
+
+        public MedianFinder() {
+            minHeap = new PriorityQueue<>();
+            maxHeap = new PriorityQueue<>((a,b) -> b - a);
+        }
+
+        public void addNum(int num) {
+            if (maxHeap.isEmpty() || maxHeap.peek() <= num) minHeap.add(num);
+            else maxHeap.add(num);
+            if (Math.abs(maxHeap.size() - minHeap.size()) > 1) {
+                if (maxHeap.size() > minHeap.size()) minHeap.add(maxHeap.remove());
+                else maxHeap.add(minHeap.remove());
+            }
+        }
+
+        public double findMedian() {
+            if (maxHeap.size() + minHeap.size() % 2 == 0) {
+                return minHeap.isEmpty() || maxHeap.isEmpty() ? 0 : minHeap.peek() + maxHeap.peek() / 2.0;
+            } else if (maxHeap.size() > minHeap.size()) return maxHeap.peek();
+            else if (!minHeap.isEmpty()) return minHeap.peek();
+            else return 0;
+        }
+    }
+
 }
+
