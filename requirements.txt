@@ -27,7 +27,7 @@ protobuf
 py4j
 pyparsing
 pyspark
-pyspark-stubs	post	post
+pyspark-stubs	post
 python-dateutil
 pytz
 scikit-learn
@@ -42,3 +42,4 @@ termcolor
 wheel
 wrapt
 xgboost
+torch

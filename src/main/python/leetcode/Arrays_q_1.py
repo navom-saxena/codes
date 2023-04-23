@@ -92,7 +92,7 @@ def shuffle(nums: List[int], n: int) -> List[int]:
 def mostWordsFound(self, sentences: List[str]) -> int:
     max_length: int = 0
     for sentence in sentences:
-        words: list[str] = sentence.split(" ")
+        words: List[str] = sentence.split(" ")
         max_length = max(max_length, len(words))
 
     return max_length
@@ -190,7 +190,7 @@ def createTargetArray(nums: List[int], index: List[int]) -> List[int]:
 
 def restoreString(s: str, indices: List[int]) -> str:
     n: int = len(indices)
-    res: List[int] = [0] * n
+    res: List[str] = ["0"] * n
     for i in range(n):
         res[indices[i]] = s[i]
     return "".join(res)
@@ -303,7 +303,7 @@ def uniqueMorseRepresentations(self, words: List[str]) -> int:
     for word in words:
         m_code: str = ""
         for alphabet in word:
-            m_code = m_code + m_codes[ord(alphabet) - 97]
+            m_code += m_codes[ord(alphabet) - 97]
         unique_v.add(m_code)
 
     return len(unique_v)
@@ -538,7 +538,7 @@ def minTimeToVisitAllPoints(self, points: List[List[int]]) -> int:
 
 # https://leetcode.com/problems/sum-of-all-subset-xor-totals/description/
 
-def subsetXORSumUtil(nums: List[int], i: int, running_xor: int, total: int) -> None:
+def subsetXORSumUtil(nums: List[int], i: int, running_xor: int, total: List[int]) -> None:
     if i == len(nums):
         total[0] += running_xor
         return
@@ -548,9 +548,9 @@ def subsetXORSumUtil(nums: List[int], i: int, running_xor: int, total: int) -> N
 
 
 def subsetXORSum(self, nums: List[int]) -> int:
-    total: int = 0
+    total: List[int] = [0]
     subsetXORSumUtil(nums, 0, 0, total)
-    return total
+    return total[0]
 
 
 # https://leetcode.com/problems/find-the-highest-altitude/
@@ -704,7 +704,6 @@ class MovingAverage:
 # https://leetcode.com/problems/single-row-keyboard/
 
 def calculateTime(self, keyboard: str, word: str) -> int:
-
     alphabets: Mapping[str, int] = {}
     for i, e in enumerate(keyboard):
         alphabets[e] = i
@@ -717,8 +716,3 @@ def calculateTime(self, keyboard: str, word: str) -> int:
         initial = alphabets[k]
 
     return total
-
-
-
-
-
