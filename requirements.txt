@@ -18,9 +18,9 @@ joblib
 kiwisolver
 matplotlib
 nltk
-numpy
+numpy~=1.24.2
 opt-einsum
-pandas
+pandas~=1.5.3
 patsy
 pip
 protobuf
@@ -31,7 +31,7 @@ pyspark-stubs	post
 python-dateutil
 pytz
 scikit-learn
-scipy
+scipy~=1.10.1
 setuptools
 six
 statsmodels
@@ -42,4 +42,5 @@ termcolor
 wheel
 wrapt
 xgboost
-torch
+torch~=1.13.1
+sortedcontainers~=2.4.0
