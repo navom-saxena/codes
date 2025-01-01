@@ -1,3 +1,4 @@
+import queue
 import sys
 from typing import List, Set, Dict, Tuple
 import heapq
@@ -566,5 +567,594 @@ def twoOutOfThree(self, nums1: List[int], nums2: List[int], nums3: List[int]) ->
     return res
 
 
+# https://leetcode.com/problems/points-that-intersect-with-cars/description/
+
+def numberOfPoints(self, nums: List[List[int]]) -> int:
+    intersecting_nums: Set[int] = set()
+    for num in nums:
+        start: int = num[0]
+        end: int = num[1]
+        for i in range(start, end + 1):
+            intersecting_nums.add(i)
+
+    return len(intersecting_nums)
 
 
+# https://leetcode.com/problems/ant-on-the-boundary/description/
+
+def returnToBoundaryCount(self, nums: List[int]) -> int:
+    res: int = 0
+    running_sum: int = 0
+    for num in nums:
+        running_sum += num
+        if running_sum == 0:
+            res += 1
+
+    return res
+
+
+# https://leetcode.com/problems/count-the-number-of-vowel-strings-in-range/description/
+
+def vowelStrings(self, words: List[str], left: int, right: int) -> int:
+    res: int = 0
+    vowels: Set[str] = {'a', 'e', 'i', 'o', 'u'}
+    for i in range(left, right + 1):
+        if words[i][0] in vowels and words[i][-1] in vowels:
+            res += 1
+
+    return res
+
+
+# https://leetcode.com/problems/split-strings-by-separator/description/
+
+def splitWordsBySeparator(self, words: List[str], separator: str) -> List[str]:
+    res: List[str] = list()
+    for word in words:
+        word_arr: List[str] = word.split(separator)
+        for new_word in word_arr:
+            if new_word:
+                res.append(new_word)
+
+    return res
+
+
+# https://leetcode.com/problems/find-the-sum-of-encrypted-integers/
+
+def sumOfEncryptedInt(self, nums: List[int]) -> int:
+    res: int = 0
+
+    for num in nums:
+        max_no: int = 0
+        num_digits: int = 0
+        while num > 0:
+            last_digit: int = num % 10
+            max_no = max(max_no, last_digit)
+            num //= 10
+            num_digits += 1
+
+        new_num: int = 0
+        while num_digits > 0:
+            new_num *= 10
+            new_num += max_no
+            num_digits -= 1
+
+        res += new_num
+
+    return res
+
+
+# https://leetcode.com/problems/find-the-k-or-of-an-array/
+
+def findKOr(self, nums: List[int], k: int) -> int:
+    res: int = 0
+
+    for i in range(0, 32):
+        k_count: int = 0
+
+        for num in nums:
+            if num & (1 << i):
+                k_count += 1
+            if k_count == k:
+                break
+
+        if k_count == k:
+            res += (1 << i)
+
+    return res
+
+
+# https://leetcode.com/problems/divide-array-into-equal-pairs/
+
+def divideArray(self, nums: List[int]) -> bool:
+    pairs: int = len(nums) // 2
+    freq_map: Dict[int, int] = dict()
+    for num in nums:
+        freq_map[num] = freq_map.get(num, 0) + 1
+
+    pairs_formed: int = 0
+    for v in freq_map.values():
+        if v % 2 != 0:
+            return False
+        pairs_formed += v // 2
+
+    return pairs == pairs_formed
+
+
+# https://leetcode.com/problems/find-champion-i/description/
+
+def findChampion(self, grid: List[List[int]]) -> int:
+    max_wins: int = 0
+    champion: int = 0
+    n: int = len(grid)
+
+    for i in range(n):
+        wins: int = 0
+        for j in range(n):
+            if grid[i][j] == 1:
+                wins += 1
+        if wins > max_wins:
+            max_wins = wins
+            champion = i
+
+    return champion
+
+
+# https://leetcode.com/problems/kth-distinct-string-in-an-array/description/
+
+def kthDistinct(self, arr: List[str], k: int) -> str:
+    words_freq: Dict[str, int] = dict()
+    for word in arr:
+        words_freq[word] = words_freq.get(word, 0) + 1
+
+    for word in arr:
+        if words_freq[word] == 1:
+            k -= 1
+        if k == 0:
+            return word
+
+    return ""
+
+
+# https://leetcode.com/problems/projection-area-of-3d-shapes/description/
+
+def projectionArea(self, grid: List[List[int]]) -> int:
+    n: int = len(grid)
+    r_max: List[int] = [0] * n
+    c_max: List[int] = [0] * n
+    height: int = 0
+
+    for i in range(n):
+        for j in range(n):
+            v: int = grid[i][j]
+            if v > 0:
+                r_max[i] = max(r_max[i], v)
+                c_max[j] = max(c_max[j], v)
+                height += 1
+
+    res: int = height
+    for max_h in r_max:
+        res += max_h
+    for max_h in c_max:
+        res += max_h
+
+    return res
+
+
+# https://leetcode.com/problems/maximum-value-of-a-string-in-an-array/description/
+
+def maximumValue(self, strs: List[str]) -> int:
+    res: int = 0
+    for word in strs:
+        value: int = 0
+        alphabet_found: bool = False
+        for alphabet in word:
+            if alphabet.isalpha():
+                alphabet_found = True
+
+        w_len: int = len(word) if alphabet_found else int(word)
+        res = max(res, w_len)
+
+    return res
+
+
+# https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/
+
+def minimumOperations(self, nums: List[int]) -> int:
+    nums_sorted: List[int] = sorted(nums)
+    res: int = 0
+    for i, num in enumerate(nums_sorted):
+        if num > 0:
+            if i == 0:
+                res += 1
+            else:
+                if nums_sorted[i - 1] != num:
+                    res += 1
+
+    return res
+
+
+# https://leetcode.com/problems/minimum-subsequence-in-non-increasing-order/description/
+
+def minSubsequence(self, nums: List[int]) -> List[int]:
+    sorted_nums: List[int] = sorted(nums, reverse=True)
+    subsequence: List[int] = list()
+    total_sum: int = 0
+    running_sum: int = 0
+    for num in nums:
+        total_sum += num
+    for num in sorted_nums:
+        if running_sum <= total_sum:
+            subsequence.append(num)
+            total_sum -= num
+            running_sum += num
+        else:
+            return subsequence
+
+    return subsequence
+
+
+# https://leetcode.com/problems/distribute-elements-into-two-arrays-i/description/
+
+def resultArray(self, nums: List[int]) -> List[int]:
+    arr1: List[int] = list()
+    arr2: List[int] = list()
+
+    arr1.append(nums[0])
+    arr2.append(nums[1])
+    for i in range(2, len(nums)):
+        if arr1[-1] > arr2[-1]:
+            arr1.append(nums[i])
+        else:
+            arr2.append(nums[i])
+
+    arr1.extend(arr2)
+    return arr1
+
+
+# https://leetcode.com/problems/count-pairs-that-form-a-complete-day-i/description/
+
+def countCompleteDayPairs(self, hours: List[int]) -> int:
+    pairs: int = 0
+    n: int = len(hours)
+
+    for i in range(0, n):
+        for j in range(i + 1, n):
+            h1: int = hours[i]
+            h2: int = hours[j]
+            if (h1 + h2) % 24 == 0:
+                pairs += 1
+
+    return pairs
+
+
+# https://leetcode.com/problems/longest-subsequence-with-limited-sum/description//
+
+def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+    n: int = len(nums)
+    subseq_sum: List[int] = list()
+    nums: List[int] = sorted(nums)
+
+    running_sum: int = 0
+    for i in range(n):
+        running_sum += nums[i]
+        subseq_sum.append(running_sum)
+
+    res: List[int] = list()
+    for q in queries:
+        low: int = 0
+        high: int = n - 1
+        min_count: int = -1
+        while low <= high:
+            mid: int = low + (high - low) // 2
+            if subseq_sum[mid] == q:
+                min_count = mid
+                break
+            elif subseq_sum[mid] > q:
+                high = mid - 1
+            else:
+                min_count = mid
+                low = mid + 1
+
+        res.append(min_count + 1)
+
+    return res
+
+
+# https://leetcode.com/problems/shortest-distance-to-a-character/description/
+
+def shortestToChar(self, s: str, c: str) -> List[int]:
+    n: int = len(s)
+    res: List[int] = list()
+
+    c_indexes: List[int] = list()
+    for i in range(n):
+        if s[i] == c:
+            c_indexes.append(i)
+    m: int = len(c_indexes)
+
+    j: int = 0
+    for i in range(n):
+        nearest_low: int = c_indexes[j]
+        nearest_high: int = c_indexes[j]
+        if j < m - 1:
+            nearest_high = c_indexes[j + 1]
+
+        res.append(min(abs(i - nearest_low), abs(i - nearest_high)))
+        if abs(i - nearest_low) > abs(i - nearest_high):
+            j += 1
+
+    return res
+
+
+# https://leetcode.com/problems/keep-multiplying-found-values-by-two/description/
+
+def findFinalValue(self, nums: List[int], original: int) -> int:
+    nums_set: Set[int] = set()
+    for num in nums:
+        nums_set.add(num)
+
+    while original in nums_set:
+        original *= 2
+
+    return original
+
+
+# https://leetcode.com/problems/number-of-unequal-triplets-in-array/description/
+
+def unequalTriplets(self, nums: List[int]) -> int:
+    # https://www.youtube.com/watch?v=VaEWRlNkKMI
+    nums_dict: Dict[int, int] = dict()
+    res: int = 0
+
+    for num in nums:
+        nums_dict[num] = nums_dict.get(num, 0) + 1
+
+    n: int = len(nums)
+
+    distinct_triplets: int = (n * (n - 1) * (n - 2) // 6)
+    all_same: int = sum(max(x * (x - 1) * (x - 2) // 6, 0) for x in nums_dict.values())
+    two_same: int = sum(max((n - x) * x * (x - 1) // 2, 0) for x in nums_dict.values())
+
+    return distinct_triplets - all_same - two_same
+
+
+# https://leetcode.com/problems/maximum-count-of-positive-integer-and-negative-integer/description/
+
+def maximumCount(self, nums: List[int]) -> int:
+    n: int = len(nums)
+    low: int = 0
+    high: int = n - 1
+
+    negative_pos: int = -1
+    while low <= high:
+        mid: int = low + (high - low) // 2
+        if nums[mid] < 0:
+            negative_pos = mid
+            low = mid + 1
+        elif nums[mid] >= 0:
+            high = mid - 1
+
+    low = 0
+    high = n - 1
+
+    positive_pos: int = n
+    while low <= high:
+        mid: int = low + (high - low) // 2
+        if nums[mid] <= 0:
+            low = mid + 1
+        elif nums[mid] > 0:
+            positive_pos = mid
+            high = mid - 1
+
+    return max(negative_pos + 1, n - positive_pos)
+
+
+# https://leetcode.com/problems/find-minimum-operations-to-make-all-elements-divisible-by-three/
+
+def minimumOperations_3(self, nums: List[int]) -> int:
+    max_operations: int = 0
+    for num in nums:
+        r: int = num % 3
+        max_operations += min(abs(r), abs(3 - r))
+
+    return max_operations
+
+
+# https://leetcode.com/problems/minimum-average-of-smallest-and-largest-elements/description/
+
+def minimumAverage(self, nums: List[int]) -> float:
+    nums: List[int] = sorted(nums)
+    i: int = 0
+    j: int = len(nums) - 1
+    res: float = float('inf')
+
+    while i < j:
+        smallest_no: int = nums[i]
+        largest_no: int = nums[j]
+        average: float = (smallest_no + largest_no) / 2
+        res = min(res, average)
+
+    return res
+
+
+# https://leetcode.com/problems/count-common-words-with-one-occurrence/description/
+
+def countWords(self, words1: List[str], words2: List[str]) -> int:
+    word_dict: Dict[str, List[int]] = dict()
+
+    for word in words1:
+        word_v: List[int] = word_dict.get(word, [0, 0])
+        word_v[0] += 1
+        word_dict[word] = word_v
+
+    for word in words2:
+        word_v: List[int] = word_dict.get(word, [0, 0])
+        word_v[1] += 1
+        word_dict[word] = word_v
+
+    res: int = 0
+    for v in word_dict.values():
+        if v == [1,1]:
+            res += 1
+
+    return res
+
+
+# https://leetcode.com/problems/check-distances-between-same-letters/description/
+
+def checkDistances(self, s: str, distance: List[int]) -> bool:
+    s_distance: List[int] = [-1] * 26
+    for i in range(len(s)):
+        letter: str = s[i]
+        letter_ord: int = ord(letter) - 97
+        if s_distance[letter_ord] == 0:
+            s_distance[letter_ord] = i
+        else:
+            s_distance[letter_ord] = i - s_distance[letter_ord] - 1
+            if s_distance[letter_ord] != distance[letter_ord]:
+                return False
+
+    return True
+
+
+# https://leetcode.com/problems/keyboard-row/description/
+
+def findWords(self, words: List[str]) -> List[str]:
+    r_dict: Dict[str, int] = {
+        "qwertyuiop": 1,
+        "asdfghjkl": 2,
+        "zxcvbnm": 3
+    }
+
+    res: List[str] = []
+    for word in words:
+        found_in: Set[int] = set()
+        for w in word:
+            w = w.lower()
+            if len(found_in) > 1:
+                break
+            for k, v in r_dict.items():
+                if w in k:
+                    found_in.add(v)
+
+        if len(found_in) == 1:
+            res.append(word)
+
+    return res
+
+
+# https://leetcode.com/problems/matrix-cells-in-distance-order/
+
+def allCellsDistOrder(self, rows: int, cols: int, rCenter: int, cCenter: int) -> List[List[int]]:
+    directions: List[List[int]] = [
+        [0, 1], [0, -1], [1, 0], [-1, 0]
+    ]
+
+    first_node: Tuple[int, int] = (rCenter, cCenter)
+    q: queue.Queue = queue.Queue()
+    q.put(first_node)
+
+    visited: Set[Tuple[int, int]] = set()
+    visited.add(first_node)
+
+    res: List[List[int]] = list()
+
+    while not q.empty():
+        node: Tuple[int, int] = q.get()
+        res.append(list(node))
+
+        for direction in directions:
+            new_x: int = node[0] + direction[0]
+            new_y: int = node[1] + direction[1]
+            new_node: Tuple[int, int] = (new_x, new_y)
+
+            if new_node not in visited and 0 <= new_x < rows and 0 <= new_y < cols:
+                visited.add(new_node)
+                q.put(new_node)
+
+    return res
+
+
+# https://leetcode.com/problems/check-if-bitwise-or-has-trailing-zeros/
+
+def hasTrailingZeros(self, nums: List[int]) -> bool:
+    even_count: int = 0
+    for num in nums:
+        if num % 2 == 0:
+            even_count += 1
+            if even_count == 2:
+                break
+
+    return even_count >= 2
+
+
+# https://leetcode.com/problems/smallest-range-i/description/
+
+def smallestRangeI(self, nums: List[int], k: int) -> int:
+    min_no: int = sys.maxsize
+    max_no: int = - sys.maxsize - 1
+
+    for num in nums:
+        min_no = min(min_no, num)
+        max_no = max(max_no, num)
+
+    difference: int = max_no - min_no
+    return max(0, difference - (2 * k))
+
+
+# https://leetcode.com/problems/count-pairs-of-similar-strings/description/
+
+def similarPairs(self, words: List[str]) -> int:
+    words_dict: Dict[str, int] = dict()
+
+    for word in words:
+        word_set: Set[str] = set()
+        for alphabet in word:
+            word_set.add(alphabet)
+
+        word_str: str = ''.join(sorted(word_set))
+
+        f: int = words_dict.get(word_str, 0) + 1
+        words_dict[word_str] = f
+
+    res: int = 0
+    for value in words_dict.values():
+        if value > 1:
+            pairs: int = 1
+            for v in range(value - 2, value + 1):
+                pairs *= v
+            if value > 2:
+                pairs /= (value - 2)
+            res += pairs
+
+    return res
+
+
+# https://leetcode.com/problems/time-needed-to-buy-tickets/description/
+
+def timeRequiredToBuy(self, tickets: List[int], k: int) -> int:
+    time: int = 0
+    for i, t in enumerate(tickets):
+        if i <= k:
+            time += min(t, tickets[k])
+        else:
+            time += min(t, tickets[k] - 1)
+
+    return time
+
+
+# https://leetcode.com/problems/crawler-log-folder/description/
+
+def minOperations_2(self, logs: List[str]) -> int:
+    jumps: int = 0
+    for log in logs:
+        if log == '../':
+            jumps -= 1
+            if jumps < 0:
+                jumps = 0
+        elif log == './':
+            pass
+        else:
+            jumps += 1
+
+    return jumps
